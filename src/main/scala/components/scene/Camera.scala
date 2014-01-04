@@ -1,9 +1,10 @@
 package components.scene
 
-import data.Data._
+import data.Types._
 
 class Camera(val position: P, val direction: D, val up: D, val right: D,
-             val focus: Double, val width: Double, val height: Double, val resolutionX: Int, val resolutionY: Int) {
+             val focus: S, val width: S, val height: S,
+             val resolutionX: Int, val resolutionY: Int) {
   val center = position + direction * focus
   val maxX = resolutionX - 1
   val maxY = resolutionY - 1
@@ -20,7 +21,7 @@ class Camera(val position: P, val direction: D, val up: D, val right: D,
 
 object Camera {
   def apply(position: P, lookAt: P = P.origin, up: D = V.k,
-            focus: Double, width: Double, height: Double,
+            focus: S, width: S, height: S,
             resolutionX: Int = 640, resolutionY: Int = 480) = {
     val direction = (lookAt - position).direction
     val right = (direction cross up).direction

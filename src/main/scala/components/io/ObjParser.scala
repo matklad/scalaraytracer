@@ -1,10 +1,10 @@
 package components.io
 
 import components.shapes.{Triangle, Shape}
-import data.Data
+import data.Types._
 import components.Material
 
-object ObjParser extends Data {
+object ObjParser {
   def parse(input: String): Vector[Shape] = {
     val lines = input.lines.toArray
     val vLines = lines filter (_.startsWith("v "))

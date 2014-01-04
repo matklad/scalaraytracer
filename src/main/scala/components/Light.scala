@@ -1,6 +1,6 @@
 package components
 
-import data.Data._
+import data.Types._
 
 class LightRay(val color: Color, val ray: R)
 

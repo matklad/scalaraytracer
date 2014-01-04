@@ -1,5 +1,7 @@
 package components.io
 
+import data.Types._
+
 trait ConsoleDisplay extends Display {
   val white = ' '
   val black = '.'

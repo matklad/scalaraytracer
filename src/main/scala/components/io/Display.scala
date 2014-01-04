@@ -1,7 +1,7 @@
 package components.io
 
-import data.{Data, BitMap}
+import data.Types._
 
-trait Display extends Data {
+trait Display {
   def display(bitmap: BitMap): Unit
 }

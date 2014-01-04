@@ -1,10 +1,10 @@
 import components.shapes.Sphere
-import data.Data
+import data.Types._
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{PropSpec, ShouldMatchers}
 import org.scalacheck.{Arbitrary, Gen}
 
-class ShapeTest extends PropSpec with GeneratorDrivenPropertyChecks with ShouldMatchers with Data {
+class ShapeTest extends PropSpec with GeneratorDrivenPropertyChecks with ShouldMatchers {
   val vectors: Gen[V] = for {
     x <- Gen.choose(-100, 100)
     y <- Gen.choose(-100, 100)

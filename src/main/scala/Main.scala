@@ -3,6 +3,7 @@ import components.io.{ObjParser, ImageDisplay}
 import components.{Material, LightSource}
 import components.scene.{SceneBuilder, Camera}
 import components.shapes.Sphere
+import data.Types._
 
 import scala.language.implicitConversions
 

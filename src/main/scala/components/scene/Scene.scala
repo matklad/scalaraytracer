@@ -1,7 +1,7 @@
 package components.scene
 
 
-import data.Data._
+import data.Types._
 import components.{LightRay, Material, LightSource}
 import components.shapes.{Sphere, Shape}
 
@@ -32,7 +32,7 @@ class Scene(val camera: Camera, val color: Color, val ambientLight: Color,
     var diffuse, specular = Color.zero
     visibleLights foreach {
       l =>
-        val nz: Double => Double = math.max(0, _)
+        val nz: S => S = math.max(0, _)
         val diffuseK = nz(l.ray.direction dot -n) * m.diffuseK
         diffuse += (baseColor * l.color).amplify(diffuseK)
 
@@ -62,8 +62,8 @@ class Scene(val camera: Camera, val color: Color, val ambientLight: Color,
       Color.pureBlack
   }
 
-  def intersect(ray: R): (Double, Shape) = {
-    var intersection: (Double, Shape) = (box.intersectWith(ray), box)
+  def intersect(ray: R): (S, Shape) = {
+    var intersection: (S, Shape) = (box.intersectWith(ray), box)
     shapes foreach {
       s =>
         val t = s.intersectWith(ray)

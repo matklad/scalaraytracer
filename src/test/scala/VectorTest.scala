@@ -1,7 +1,7 @@
-import data.Data
+import data.Types._
 import org.scalatest._
 
-class VectorTest extends FunSuite with Data {
+class VectorTest extends FunSuite {
   val a = V(1, 2, 3)
   val b = V(1, 2, 3)
   val sum = a + b

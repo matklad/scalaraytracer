@@ -1,6 +1,6 @@
 package components
 
-import data.Data._
+import data._
 
 class Material(val color: Color, val ambientK: Double, val diffuseK: Double, val specularK: Double) {
 

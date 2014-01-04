@@ -1,6 +1,6 @@
 package components.shapes
 
-import data.Data._
+import data.Types._
 import components.Material
 
 
@@ -21,7 +21,7 @@ class Triangle(val a: P, val b: P, val c: P, material: Material) extends Shape(m
 
   def normalAt(p: P): D = n
 
-  def intersectWith(r: R): Double = {
+  def intersectWith(r: R): S = {
     val ao = a - r.origin
     val denom = r.direction dot n
     if (math.abs(denom) > 1e-6) {
@@ -32,9 +32,9 @@ class Triangle(val a: P, val b: P, val c: P, material: Material) extends Shape(m
       if (0 < p && p < 1 && 0 < q && q < 1 && p + q < 1)
         t
       else
-        Double.MaxValue
+        S.MaxValue
     } else
-      Double.MaxValue
+      S.MaxValue
   }
 }
 

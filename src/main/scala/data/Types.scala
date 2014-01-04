@@ -1,6 +1,10 @@
 package data
 
-trait Data {
+
+object Types {
+
+  type S = Double
+  val S = Double
 
   type V = Vector3d
   val V = Vector3d
@@ -24,5 +28,3 @@ trait Data {
   val Color = data.Color
 
 }
-
-object Data extends Data
