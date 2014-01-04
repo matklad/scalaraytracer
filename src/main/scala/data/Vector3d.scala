@@ -1,44 +1,42 @@
 package data
 
-import spire.implicits._
-import spire.math._
 
-class Vector3d[T: Fractional](val x: T, val y: T, val z: T) {
+class Vector3d(val x: Double, val y: Double, val z: Double){
 
-  private[data] def map(f: T => T): Vector3d[T] = new Vector3d(f(x), f(y), f(z))
+  private[data] def map(f: Double => Double): Vector3d = new Vector3d(f(x), f(y), f(z))
 
-  private[data] def zipWith(f: (T, T) => T)(that: Vector3d[T]): Vector3d[T] = new Vector3d(f(x, that.x), f(y, that.y), f(z, that.z))
+  private[data] def zipWith(f: (Double, Double) => Double)(that: Vector3d): Vector3d = new Vector3d(f(x, that.x), f(y, that.y), f(z, that.z))
 
-  def +(that: Vector3d[T]): Vector3d[T] = zipWith(_ + _)(that)
+  def +(that: Vector3d): Vector3d = zipWith(_ + _)(that)
 
-  def -(that: Vector3d[T]): Vector3d[T] = zipWith(_ - _)(that)
+  def -(that: Vector3d): Vector3d = zipWith(_ - _)(that)
 
   def unary_- = map(-_)
 
-  def *(that: T) = map(_ * that)
+  def *(that: Double) = map(_ * that)
 
-  def dot(that: Vector3d[T]): T = {
+  def dot(that: Vector3d): Double = {
     val r = this.zipWith(_ * _)(that)
     r.x + r.y + r.z
   }
 
-  def cross(that: Vector3d[T]): Vector3d[T] = {
+  def cross(that: Vector3d): Vector3d = {
     val (a, b, c) = (that.x, that.y, that.z)
     // x y z
     // a b c
     new Vector3d(y * c - z * b, -(x * c - z * a), x * b - y * a)
   }
 
-  def length: T = sqrt(x * x + y * y + z * z)
+  def length: Double = Math.sqrt(x * x + y * y + z * z)
 
-  def direction: UnitVector3d[T] = {
+  def direction: UnitVector3d = {
     val u = this * (1 / this.length)
-    new UnitVector3d[T](u.x, u.y, u.z)
+    new UnitVector3d(u.x, u.y, u.z)
   }
 
   override def equals(that: scala.Any): Boolean = {
     that match {
-      case that: Vector3d[T] => (this - that).length < 1e-6
+      case that: Vector3d => (this - that).length < 1e-6
       case _ => false
     }
   }
@@ -48,25 +46,25 @@ class Vector3d[T: Fractional](val x: T, val y: T, val z: T) {
   }
 }
 
-class UnitVector3d[T](x: T, y: T, z: T)(implicit ev: Fractional[T]) extends Vector3d[T](x, y, z) {
-  assert(abs(length - ev.one) < 1e-6, s"$length ${ev.one}")
+class UnitVector3d(x: Double, y: Double, z: Double) extends Vector3d(x, y, z) {
+  assert(Math.abs(length - 1) < 1e-6, s"$length ${1}")
 
-  override def unary_- = new UnitVector3d[T](-x, -y, -z)
+  override def unary_- = new UnitVector3d(-x, -y, -z)
 
 }
 
 object Vector3d {
-  def apply[T: Fractional](x: T, y: T, z: T): Vector3d[T] = {
-    new Vector3d[T](x, y, z)
+  def apply(x: Double, y: Double, z: Double): Vector3d = {
+    new Vector3d(x, y, z)
   }
 
-  def zero[T](implicit ev: Fractional[T]): Vector3d[T] = Vector3d(ev.zero, ev.zero, ev.zero)
+  def zero: Vector3d = Vector3d(0, 0, 0)
 
-  def i[T](implicit ev: Fractional[T]): UnitVector3d[T] = new UnitVector3d(ev.one, ev.zero, ev.zero)
+  def i: UnitVector3d = new UnitVector3d(1, 0, 0)
 
-  def j[T](implicit ev: Fractional[T]): UnitVector3d[T] = new UnitVector3d(ev.zero, ev.one, ev.zero)
+  def j: UnitVector3d = new UnitVector3d(0, 1, 0)
 
-  def k[T](implicit ev: Fractional[T]): UnitVector3d[T] = new UnitVector3d(ev.zero, ev.zero, ev.one)
+  def k: UnitVector3d = new UnitVector3d(0, 0, 1)
 
 }
 

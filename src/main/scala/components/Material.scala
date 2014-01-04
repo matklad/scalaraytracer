@@ -2,12 +2,12 @@ package components
 
 import data.Data._
 
-class Material(val color: Color, val ambientK: S, val diffuseK: S, val specularK: S) {
+class Material(val color: Color, val ambientK: Double, val diffuseK: Double, val specularK: Double) {
 
 }
 
 object Material {
-  def apply(color: Color, ambientK: S = .9, diffuseK: S = .9, specularK: S = 4): Material = {
+  def apply(color: Color, ambientK: Double = .9, diffuseK: Double = .9, specularK: Double = 4): Material = {
     new Material(color, ambientK, diffuseK, specularK)
   }
 

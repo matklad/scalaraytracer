@@ -7,20 +7,21 @@ import components.shapes.Sphere
 import scala.language.implicitConversions
 
 object Main extends ImageDisplay {
-  implicit def TupleToPoint[A <% S, B <% S, C <% S](t: (A, B, C)): P =
+  implicit def TupleToPoint[A <% Double, B <% Double, C <% Double](t: (A, B, C)): P =
     P(t._1, t._2, t._3)
 
   def main(args: Array[String]) {
     val s = io.Source.fromFile("utah.obj").mkString
     val triangles = ObjParser.parse(s)
+    Thread.sleep(5)
     val scene = SceneBuilder(
       Camera(
         position = (50, 50, 80),
         focus = 80,
         width = 40,
         height = 30,
-        resolutionX = 640,
-        resolutionY = 480))
+        resolutionX = 800,
+        resolutionY = 600))
       .shapes(
         triangles: _*
       ).ambient(

@@ -1,6 +1,6 @@
 package data
 
-class Color(val v: Vector3d[Double]) extends AnyVal{
+class Color(val v: Vector3d) extends AnyVal{
   def +(that: Color): Color = new Color(v + that.v)
 
   def amplify(t: Double): Color = new Color(v * t)
@@ -24,7 +24,7 @@ class Color(val v: Vector3d[Double]) extends AnyVal{
 
 object Color {
   def apply(r: Double, g: Double, b: Double): Color = {
-    new Color(Vector3d[Double](r, g, b))
+    new Color(Vector3d(r, g, b))
   }
 
   private val z = 0.05

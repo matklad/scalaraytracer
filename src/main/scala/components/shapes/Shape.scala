@@ -7,5 +7,5 @@ abstract class Shape(val material: Material) {
 
   def normalAt(p: P): D
 
-  def intersectWith(r: R): S
+  def intersectWith(r: R): Double
 }
