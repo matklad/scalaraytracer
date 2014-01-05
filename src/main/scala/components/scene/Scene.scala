@@ -56,7 +56,10 @@ class Scene(val camera: Camera, val color: Color, val ambientLight: Color,
   def trace(ray: R): Color = {
     val (t, s) = intersect(ray)
     val p = ray.along(t)
-    shade(s, p, ray.direction)
+    if (s != box)
+      shade(s, p, ray.direction)
+    else
+      color
   }
 
   def intersect(ray: R): (S, Shape) = {
