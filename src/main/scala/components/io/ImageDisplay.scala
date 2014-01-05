@@ -16,10 +16,12 @@ class ImageDisplay extends Display {
     val image = new BufferedImage(bitmap.width, bitmap.height, BufferedImage.TYPE_INT_ARGB)
     val raster = image.getRaster
     for (x <- 0 until bitmap.width;
-         y <- 0 until bitmap.height) {
-      val c = bitmap(x, y)
-      raster.setPixel(x, y, Array[Double](c.r, c.g, c.b, 255))
-    }
+         y <- 0 until bitmap.height)
+      bitmap(x, y) match {
+        case Color.RGB(r, g, b) =>
+          raster.setPixel(x, y, Array[Double](r, g, b, 255))
+      }
+
     image
   }
 

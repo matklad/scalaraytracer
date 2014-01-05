@@ -21,8 +21,8 @@ object Main extends ImageDisplay {
         focus = 80,
         width = 40,
         height = 30,
-        resolutionX = 640 * 2,
-        resolutionY = 480 * 2))
+        resolutionX = 640,
+        resolutionY = 480))
       .shapes(
         triangles: _*
       ).ambient(
@@ -31,7 +31,7 @@ object Main extends ImageDisplay {
         LightSource((100, 0, 100), Color.white),
         LightSource((-100, 0, 100), Color.white)
       ).build()
-    display(scene.render.downSample)
+    display(scene.render)
     println("Done!")
   }
 

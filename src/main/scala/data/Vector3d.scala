@@ -1,7 +1,7 @@
 package data
 
 
-class Vector3d protected(val x: Double, val y: Double, val z: Double) {
+class Vector3d protected(private val x: Double, private val y: Double, private val z: Double) {
 
   private[data] def map(f: Double => Double): Vector3d = new Vector3d(f(x), f(y), f(z))
 
