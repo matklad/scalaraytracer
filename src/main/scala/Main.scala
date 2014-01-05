@@ -14,15 +14,14 @@ object Main extends ImageDisplay {
   def main(args: Array[String]) {
     val s = io.Source.fromFile("utah.obj").mkString
     val triangles = ObjParser.parse(s)
-    Thread.sleep(5)
     val scene = SceneBuilder(
       Camera(
         position = (50, 50, 80),
         focus = 80,
         width = 40,
         height = 30,
-        resolutionX = 800,
-        resolutionY = 600))
+        resolutionX = 640,
+        resolutionY = 480))
       .shapes(
         triangles: _*
       ).ambient(

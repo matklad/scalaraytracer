@@ -18,7 +18,7 @@ class ImageDisplay extends Display {
     for (x <- 0 until bitmap.width;
          y <- 0 until bitmap.height) {
       val c = bitmap(x, y)
-      raster.setPixel(x, y, Array[S](c.r, c.g, c.b, 255))
+      raster.setPixel(x, y, Array[Double](c.r, c.g, c.b, 255))
     }
     image
   }

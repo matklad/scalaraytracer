@@ -10,14 +10,14 @@ class Scene(val camera: Camera, val color: Color, val ambientLight: Color,
 
   def render: BitMap = {
     val start = System.currentTimeMillis()
-    val bm = BitMap(camera.resolutionX, camera.resolutionY) {
+    val bitMap = BitMap(camera.resolutionX, camera.resolutionY) {
       (x, y) =>
         val r = camera.apply(x, y)
         trace(r).norm
     }
     val end = System.currentTimeMillis()
-    println((end - start) / 1000.0)
-    bm
+    println(s"time for frame: ${(end - start) / 1000}s")
+    bitMap
   }
 
   def shade(shape: Shape, point: P, view: D): Color = {
@@ -56,10 +56,7 @@ class Scene(val camera: Camera, val color: Color, val ambientLight: Color,
   def trace(ray: R): Color = {
     val (t, s) = intersect(ray)
     val p = ray.along(t)
-    if (s != box)
-      shade(s, p, ray.direction)
-    else
-      Color.pureBlack
+    shade(s, p, ray.direction)
   }
 
   def intersect(ray: R): (S, Shape) = {
