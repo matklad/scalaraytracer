@@ -1,6 +1,6 @@
 package data
 
-class Ray(val origin: Point, val direction: UnitVector3d) {
+class Ray private(val origin: Point, val direction: UnitVector3d) {
   def along(t: Double): Point = origin + direction * t
 }
 

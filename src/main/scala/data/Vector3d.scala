@@ -1,7 +1,7 @@
 package data
 
 
-class Vector3d(val x: Double, val y: Double, val z: Double){
+class Vector3d protected(val x: Double, val y: Double, val z: Double) {
 
   private[data] def map(f: Double => Double): Vector3d = new Vector3d(f(x), f(y), f(z))
 
@@ -58,13 +58,13 @@ object Vector3d {
     new Vector3d(x, y, z)
   }
 
-  def zero: Vector3d = Vector3d(0, 0, 0)
+  val zero: Vector3d = Vector3d(0, 0, 0)
 
-  def i: UnitVector3d = new UnitVector3d(1, 0, 0)
+  val i: UnitVector3d = new UnitVector3d(1, 0, 0)
 
-  def j: UnitVector3d = new UnitVector3d(0, 1, 0)
+  val j: UnitVector3d = new UnitVector3d(0, 1, 0)
 
-  def k: UnitVector3d = new UnitVector3d(0, 0, 1)
+  val k: UnitVector3d = new UnitVector3d(0, 0, 1)
 
 }
 

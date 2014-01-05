@@ -3,8 +3,8 @@ package components.io
 import data.Types._
 
 trait ConsoleDisplay extends Display {
-  val white = ' '
-  val black = '.'
+  private val white = ' '
+  private val black = '.'
 
   def display(bitmap: BitMap): Unit = {
     var ans = new StringBuilder()

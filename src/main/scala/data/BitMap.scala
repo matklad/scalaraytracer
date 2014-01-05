@@ -2,7 +2,7 @@ package data
 
 import scala.reflect.ClassTag
 
-class BitMap[C](val width: Int, val height: Int, val data: Array[Array[C]]) {
+class BitMap[C] private(val width: Int, val height: Int, private val data: Array[Array[C]]) {
   def apply(x: Int, y: Int) = data(x)(y)
 }
 

@@ -1,6 +1,6 @@
 package data
 
-class Color(val v: Vector3d) extends AnyVal{
+class Color private(val v: Vector3d) extends AnyVal {
   def +(that: Color): Color = new Color(v + that.v)
 
   def amplify(t: Double): Color = new Color(v * t)

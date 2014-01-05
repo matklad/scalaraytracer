@@ -1,7 +1,7 @@
 package data
 
 
-class Point(val v: Vector3d) extends AnyVal {
+class Point private(val v: Vector3d) extends AnyVal {
   def -(that: Point): Vector3d = v - that.v
 
   def +(that: Vector3d): Point = new Point(v + that)

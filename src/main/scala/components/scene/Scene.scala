@@ -5,8 +5,9 @@ import data.Types._
 import components.{LightRay, Material, LightSource}
 import components.shapes.{Sphere, Shape}
 
-class Scene(val camera: Camera, val color: Color, val ambientLight: Color,
-            val shapes: Vector[Shape], val lightSources: Vector[LightSource]) {
+class Scene private[scene](private val camera: Camera, private val color: Color,
+                    private val ambientLight: Color, private val shapes: Vector[Shape],
+                    private val lightSources: Vector[LightSource]) {
 
   def render: BitMap = {
     val start = System.currentTimeMillis()
@@ -20,7 +21,7 @@ class Scene(val camera: Camera, val color: Color, val ambientLight: Color,
     bitMap
   }
 
-  def shade(shape: Shape, point: P, view: D): Color = {
+  private def shade(shape: Shape, point: P, view: D): Color = {
     val n = shape.normalAt(point)
     val p = point + n * 1e-6
     val m = shape.material
@@ -44,25 +45,25 @@ class Scene(val camera: Camera, val color: Color, val ambientLight: Color,
     specular + ambient + diffuse
   }
 
-  def reflect(original: D, n: D) = {
+  private def reflect(original: D, n: D) = {
     (n * (n dot original)) * 2 - original
   }
 
-  def isVisible(p: P)(l: LightRay): Boolean = {
+  private def isVisible(p: P)(l: LightRay): Boolean = {
     val (t, _) = intersect(l.ray)
     t > (p - l.ray.origin).length
   }
 
-  def trace(ray: R): Color = {
+  private def trace(ray: R): Color = {
     val (t, s) = intersect(ray)
     val p = ray.along(t)
-    if (s != box)
-      shade(s, p, ray.direction)
-    else
+    if (s.eq(box))
       color
+    else
+      shade(s, p, ray.direction)
   }
 
-  def intersect(ray: R): (S, Shape) = {
+  private def intersect(ray: R): (S, Shape) = {
     var intersection: (S, Shape) = (box.intersectWith(ray), box)
     shapes foreach {
       s =>
@@ -73,7 +74,7 @@ class Scene(val camera: Camera, val color: Color, val ambientLight: Color,
     intersection
   }
 
-  object box extends Sphere(1e10, P.origin, Material.absoluteBlack)
+  private val box = Sphere(1e10, P.origin, Material.absoluteBlack)
 
 }
 
