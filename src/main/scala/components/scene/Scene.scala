@@ -17,12 +17,20 @@ class Scene private[scene](partialCamera: ((Int, Int)) => Camera, private val op
   def render: BitMap = {
     val start = System.currentTimeMillis()
     val os = options.oversampling
+    val pixels = Array.fill[Array[Color]](resX)(null)
+    val cols = 0 until resX
+    for (x <- if (options.parallel) cols.par else cols) {
+      pixels(x) = Array.tabulate[Color](resY) {
+        y =>
+          var c = Color.zero
+          for (i <- 0 until os; j <- 0 until os)
+            c += trace(camera.apply(os * x + i, os * y + j))
+          c.amplify(1.0 / (os * os))
+      }
+    }
+
     val bitMap = BitMap(resX, resY) {
-      (x, y) =>
-        var c = Color.zero
-        for (i <- 0 until os; j <- 0 until os)
-          c += trace(camera.apply(os * x + i, os * y + j))
-        c.amplify(1.0 / (os * os))
+      (x, y) => pixels(x)(y)
     }
     val end = System.currentTimeMillis()
     println(s"time for frame: ${(end - start) / 1000}s")
