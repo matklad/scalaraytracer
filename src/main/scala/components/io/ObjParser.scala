@@ -24,7 +24,7 @@ object ObjParser {
       val blocks = line split " "
 
       val Array(v1, v2, v3) = blocks map (x => vertices(x.split("/")(0).toInt - 1))
-      Triangle(v1, v2, v3, Material(Color.red))
+      Triangle(v1, v2, v3, Material(Color.blue))
     }
     val faces = fLines map readFace
 

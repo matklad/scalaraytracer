@@ -73,9 +73,7 @@ class Scene(val camera: Camera, val color: Color, val ambientLight: Color,
     intersection
   }
 
-  object box extends Sphere(1e5, P.origin, Material.absoluteBlack) {
-    override def normalAt(p: P): D = -super.normalAt(p)
-  }
+  object box extends Sphere(1e10, P.origin, Material.absoluteBlack)
 
 }
 

@@ -17,6 +17,7 @@ object Main extends ImageDisplay {
     val scene = SceneBuilder(
       Camera(
         position = (50, 50, 80),
+        up = V.j,
         focus = 80,
         width = 40,
         height = 30,
@@ -25,7 +26,7 @@ object Main extends ImageDisplay {
       .shapes(
         triangles: _*
       ).ambient(
-        Color.white.amplify(.3)
+        Color.white.amplify(.5)
       ).lights(
         LightSource((100, 0, 100), Color.white),
         LightSource((-100, 0, 100), Color.white)
