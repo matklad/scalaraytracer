@@ -17,12 +17,8 @@ object Types {
   type R = Ray
   val R = Ray
 
-  type BitMap = data.BitMap[Color]
-
-  object BitMap {
-    def apply(width: Int = 640, height: Int = 480)(f: (Int, Int) => Color) =
-      data.BitMap[Color](width, height, f)
-  }
+  type BitMap = data.BitMap
+  val BitMap = data.BitMap
 
   type Color = data.Color
   val Color = data.Color

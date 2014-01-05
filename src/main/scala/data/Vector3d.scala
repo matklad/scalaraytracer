@@ -5,7 +5,8 @@ class Vector3d protected(val x: Double, val y: Double, val z: Double) {
 
   private[data] def map(f: Double => Double): Vector3d = new Vector3d(f(x), f(y), f(z))
 
-  private[data] def zipWith(f: (Double, Double) => Double)(that: Vector3d): Vector3d = new Vector3d(f(x, that.x), f(y, that.y), f(z, that.z))
+  private[data] def zipWith(f: (Double, Double) => Double)(that: Vector3d): Vector3d =
+    new Vector3d(f(x, that.x), f(y, that.y), f(z, that.z))
 
   def +(that: Vector3d): Vector3d = zipWith(_ + _)(that)
 
@@ -67,4 +68,3 @@ object Vector3d {
   val k: UnitVector3d = new UnitVector3d(0, 0, 1)
 
 }
-

@@ -6,19 +6,28 @@ import components.{LightRay, Material, LightSource}
 import components.shapes.{Sphere, Shape}
 
 class Scene private[scene](private val camera: Camera, private val color: Color,
-                    private val ambientLight: Color, private val shapes: Vector[Shape],
-                    private val lightSources: Vector[LightSource]) {
+                           private val ambientLight: Color, private val shapes: Vector[Shape],
+                           private val lightSources: Vector[LightSource]) {
 
   def render: BitMap = {
     val start = System.currentTimeMillis()
     val bitMap = BitMap(camera.resolutionX, camera.resolutionY) {
       (x, y) =>
         val r = camera.apply(x, y)
-        trace(r).norm
+        trace(r)
     }
     val end = System.currentTimeMillis()
     println(s"time for frame: ${(end - start) / 1000}s")
     bitMap
+  }
+
+  private def trace(ray: R): Color = {
+    val (t, s) = intersect(ray)
+    val p = ray.along(t)
+    if (s.eq(box))
+      color
+    else
+      shade(s, p, ray.direction)
   }
 
   private def shade(shape: Shape, point: P, view: D): Color = {
@@ -31,6 +40,7 @@ class Scene private[scene](private val camera: Camera, private val color: Color,
 
     val ambient = (baseColor * ambientLight).amplify(m.ambientK)
     var diffuse, specular = Color.zero
+
     visibleLights foreach {
       l =>
         val nz: S => S = math.max(0, _)
@@ -45,24 +55,6 @@ class Scene private[scene](private val camera: Camera, private val color: Color,
     specular + ambient + diffuse
   }
 
-  private def reflect(original: D, n: D) = {
-    (n * (n dot original)) * 2 - original
-  }
-
-  private def isVisible(p: P)(l: LightRay): Boolean = {
-    val (t, _) = intersect(l.ray)
-    t > (p - l.ray.origin).length
-  }
-
-  private def trace(ray: R): Color = {
-    val (t, s) = intersect(ray)
-    val p = ray.along(t)
-    if (s.eq(box))
-      color
-    else
-      shade(s, p, ray.direction)
-  }
-
   private def intersect(ray: R): (S, Shape) = {
     var intersection: (S, Shape) = (box.intersectWith(ray), box)
     shapes foreach {
@@ -72,6 +64,15 @@ class Scene private[scene](private val camera: Camera, private val color: Color,
           intersection = (t, s)
     }
     intersection
+  }
+
+  private def reflect(original: D, n: D) = {
+    (n * (n dot original)) * 2 - original
+  }
+
+  private def isVisible(p: P)(l: LightRay): Boolean = {
+    val (t, _) = intersect(l.ray)
+    t > (p - l.ray.origin).length
   }
 
   private val box = Sphere(1e10, P.origin, Material.absoluteBlack)
