@@ -5,16 +5,24 @@ import data.Types._
 import components.{LightRay, Material, LightSource}
 import components.shapes.{Sphere, Shape}
 
-class Scene private[scene](private val camera: Camera, private val color: Color,
-                           private val ambientLight: Color, private val shapes: Vector[Shape],
+class Scene private[scene](partialCamera: ((Int, Int)) => Camera, private val options: Options,
+                           private val color: Color, private val ambientLight: Color,
+                           private val shapes: Vector[Shape],
                            private val lightSources: Vector[LightSource]) {
+  private val (resX, resY) = options.resolution
+  private val camera =
+    partialCamera((resX * options.oversampling, resY * options.oversampling))
+
 
   def render: BitMap = {
     val start = System.currentTimeMillis()
-    val bitMap = BitMap(camera.resolutionX, camera.resolutionY) {
+    val os = options.oversampling
+    val bitMap = BitMap(resX, resY) {
       (x, y) =>
-        val r = camera.apply(x, y)
-        trace(r)
+        var c = Color.zero
+        for (i <- 0 until os; j <- 0 until os)
+          c += trace(camera.apply(os * x + i, os * y + j))
+        c.amplify(1.0 / (os * os))
     }
     val end = System.currentTimeMillis()
     println(s"time for frame: ${(end - start) / 1000}s")
@@ -79,11 +87,12 @@ class Scene private[scene](private val camera: Camera, private val color: Color,
 
 }
 
-class SceneBuilder(val camera: Camera) {
+class SceneBuilder(val camera: ((Int, Int)) => Camera) {
   private val _color = Color.black
   private var _ambientLight = Color.white
   private var _shapes: Vector[Shape] = Vector()
   private var _lightSources: Vector[LightSource] = Vector()
+  private var _options = Options.default
 
   def shapes(shapes: Shape*): SceneBuilder = {
     _shapes ++= shapes
@@ -100,13 +109,18 @@ class SceneBuilder(val camera: Camera) {
     this
   }
 
+  def options(options: Options): SceneBuilder = {
+    _options = options
+    this
+  }
+
   def build(): Scene = {
-    new Scene(camera, _color, _ambientLight, _shapes, _lightSources)
+    new Scene(camera, _options, _color, _ambientLight, _shapes, _lightSources)
   }
 }
 
 object SceneBuilder {
-  def apply(camera: Camera): SceneBuilder = {
+  def apply(camera: ((Int, Int)) => Camera): SceneBuilder = {
     new SceneBuilder(camera)
   }
 }

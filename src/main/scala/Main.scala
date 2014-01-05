@@ -1,7 +1,7 @@
 import components.io.{ObjParser, ImageDisplay}
 
 import components.{Material, LightSource}
-import components.scene.{SceneBuilder, Camera}
+import components.scene.{Options, SceneBuilder, Camera}
 import components.shapes.Sphere
 import data.Types._
 
@@ -20,9 +20,7 @@ object Main extends ImageDisplay {
         up = V.j,
         focus = 80,
         width = 40,
-        height = 30,
-        resolutionX = 640,
-        resolutionY = 480))
+        height = 30))
       .shapes(
         triangles: _*
       ).ambient(
@@ -30,6 +28,11 @@ object Main extends ImageDisplay {
       ).lights(
         LightSource((100, 0, 100), Color.white),
         LightSource((-100, 0, 100), Color.white)
+      ).options(
+        Options(
+          resolution = (640, 480),
+          oversampling = 2
+        )
       ).build()
     display(scene.render)
     println("Done!")
@@ -40,9 +43,7 @@ object Main extends ImageDisplay {
       position = (50, 50, 80),
       focus = 80,
       width = 40,
-      height = 30,
-      resolutionX = 640,
-      resolutionY = 480
+      height = 30
     )).shapes(
       Sphere(8, (10, 0, 0), Material(Color(.7, 0, 0))),
       Sphere(8, (0, 10, 0), Material(Color(0, .7, 0)))

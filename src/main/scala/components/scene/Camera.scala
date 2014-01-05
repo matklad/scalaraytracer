@@ -21,12 +21,12 @@ class Camera private(val position: P, val direction: D, val up: D, val right: D,
 
 object Camera {
   def apply(position: P, lookAt: P = P.origin, up: D = V.k,
-            focus: S, width: S, height: S,
-            resolutionX: Int = 640, resolutionY: Int = 480) = {
+            focus: S, width: S, height: S)
+           (resolution: (Int, Int)) = {
     val direction = (lookAt - position).direction
     val right = (direction cross up).direction
     val fixedUp = (right cross direction).direction
     new Camera(position, direction, fixedUp, right,
-      focus, width, height, resolutionX, resolutionY)
+      focus, width, height, resolution._1, resolution._2)
   }
 }
