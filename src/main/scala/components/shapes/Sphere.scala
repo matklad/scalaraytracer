@@ -49,6 +49,6 @@ class Sphere(val radius: S, val center: P, texture: Texture, material: Material)
 
 object Sphere {
   def apply(radius: S, center: P = P.origin,
-            texture: Texture, material: Material = Material.simple): Sphere =
+            texture: Texture=Solid(Color.white), material: Material = Material.simple): Sphere =
     new Sphere(radius, center, texture, material)
 }

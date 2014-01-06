@@ -19,7 +19,7 @@ object Main extends ImageDisplay {
       center = (0, 0, 15),
       up = V.k,
       focus = 80,
-      parallel = false,
+      parallel = true,
       oversampling = 3,
       nReflections = 1,
       backgroundColor = Color.blue.amplify(.2)
