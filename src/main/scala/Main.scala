@@ -1,6 +1,6 @@
 import components.io.{ObjParser, ImageDisplay}
 
-import components.{Chess, Solid, LightSource}
+import components.{Material, Chess, Solid, LightSource}
 import components.scene.SceneConfig
 import components.shapes.{Plain, Sphere}
 import data.Types._
@@ -19,11 +19,13 @@ object Main extends ImageDisplay {
       center = (0, 0, 15),
       up = V.k,
       focus = 80,
-      parallel = true,
-      oversampling = 3
+      parallel = false,
+      oversampling = 3,
+      nReflections = 1,
+      backgroundColor = Color.blue.amplify(.2)
     ).shapes(
-        Sphere(10, (0, 0, 10), Solid(Color.white)),
-        Plain(texture=Chess(side=20, black = Color.red))
+        Sphere(10, (0, 0, 10), Solid(Color.white), Material.mirror),
+        Plain(texture = Chess(side = 20, black = Color.red))
       ).lights(
         LightSource((80, 80, 50), Color.red + Color.blue),
         LightSource((-20, -20, 150), Color.blue + Color.green)
