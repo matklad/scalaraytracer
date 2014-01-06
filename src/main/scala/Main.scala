@@ -20,8 +20,8 @@ object Main extends ImageDisplay {
     ).shapes(
         triangles: _*
       ).lights(
-        LightSource((100, 0, 100), Color.white),
-        LightSource((-100, 0, 100), Color.white)
+        LightSource((100, 0, 100), Color.red + Color.blue),
+        LightSource((-100, 0, 100), Color.blue + Color.green)
       ).scene()
     display(scene.render)
     println("Done!")
