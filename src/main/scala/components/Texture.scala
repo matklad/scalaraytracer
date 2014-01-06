@@ -17,7 +17,7 @@ object Solid {
 
 class Chess private(private val side: S, private val black: Color, private val white: Color) extends Texture {
   def colorAt(x: S, y: S): Color =
-    if (((x * side).toInt + (y * side).toInt) % 2 == 0) black else white
+    if (((x / side).floor + (y / side).floor) % 2 == 0) black else white
 }
 
 object Chess {

@@ -1,7 +1,8 @@
 import components.io.{ObjParser, ImageDisplay}
 
-import components.LightSource
+import components.{Chess, Solid, LightSource}
 import components.scene.SceneConfig
+import components.shapes.{Plain, Sphere}
 import data.Types._
 
 import scala.language.implicitConversions
@@ -14,14 +15,18 @@ object Main extends ImageDisplay {
     val s = io.Source.fromFile("utah.obj").mkString
     val triangles = ObjParser.parse(s)
     val scene = SceneConfig(
-      cameraPosition = (50, 50, 80),
-      up = V.j,
-      focus = 80
+      cameraPosition = (200, 0, 100),
+      center = (0, 0, 15),
+      up = V.k,
+      focus = 80,
+      parallel = true,
+      oversampling = 3
     ).shapes(
-        triangles: _*
+        Sphere(10, (0, 0, 10), Solid(Color.white)),
+        Plain(texture=Chess(side=20, black = Color.red))
       ).lights(
-        LightSource((100, 0, 100), Color.red + Color.blue),
-        LightSource((-100, 0, 100), Color.blue + Color.green)
+        LightSource((80, 80, 50), Color.red + Color.blue),
+        LightSource((-20, -20, 150), Color.blue + Color.green)
       ).scene()
     display(scene.render)
     println("Done!")

@@ -14,5 +14,5 @@ abstract class Shape(val material: Material, val texture: Texture) {
 
   def intersectWith(r: R): S
 
-  private def coordinatesAt(p: P): (S, S) = (0, 0)
+  protected def coordinatesAt(p: P): (S, S) = (0, 0)
 }
