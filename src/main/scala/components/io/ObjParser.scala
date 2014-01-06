@@ -2,7 +2,7 @@ package components.io
 
 import components.shapes.{Triangle, Shape}
 import data.Types._
-import components.Material
+import components.{Solid, Material}
 import scala.util.Random
 
 object ObjParser {
@@ -29,7 +29,7 @@ object ObjParser {
       val blocks = line split " "
 
       val Array(v1, v2, v3) = blocks map (x => vertices(x.split("/")(0).toInt - 1))
-      Triangle(v1, v2, v3, Material(color()))
+      Triangle(v1, v2, v3, color())
     }
     val faces = fLines map readFace
 

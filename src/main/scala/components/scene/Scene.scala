@@ -2,7 +2,7 @@ package components.scene
 
 
 import data.Types._
-import components.{LightRay, Material, LightSource}
+import components.{Solid, LightRay, Material, LightSource}
 import components.shapes.{Sphere, Shape}
 
 class Scene private[scene](config: SceneConfig) {
@@ -56,7 +56,7 @@ class Scene private[scene](config: SceneConfig) {
     val n = shape.normalAt(point)
     val p = point + n * 1e-6
     val m = shape.material
-    val baseColor = m.color
+    val baseColor = shape.colorAt(point)
     val lights = lightSources map (_.shed(p))
     val visibleLights = lights filter isVisible(point)
 
@@ -97,7 +97,7 @@ class Scene private[scene](config: SceneConfig) {
     t > (p - l.ray.origin).length
   }
 
-  private val box = Sphere(1e10, P.origin, Material.absoluteBlack)
+  private val box = Sphere(1e10, P.origin, Solid(Color.pureBlack), Material.absoluteBlack)
 
 }
 
