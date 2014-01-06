@@ -13,6 +13,7 @@ object Material {
   }
 
   val simple = Material()
+  val badMirror = Material(reflectK = .4, opacityK = .6)
   val mirror = Material(0, 0, 5, 1, 0)
   val absoluteBlack = Material(ambientK = 0, diffuseK = 0, specularK = 1e18)
 }

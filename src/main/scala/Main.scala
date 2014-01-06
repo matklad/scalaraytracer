@@ -21,10 +21,11 @@ object Main extends ImageDisplay {
       focus = 80,
       parallel = true,
       oversampling = 3,
-      nReflections = 1,
+      nReflections = 3,
       backgroundColor = Color.blue.amplify(.2)
     ).shapes(
-        Sphere(10, (0, 0, 10), Solid(Color.white), Material.mirror),
+        Sphere(10, (-10, 10, 10), Solid(Color.white), Material.mirror),
+        Sphere(10, (10, -20, 10), Solid(Color.white), Material.badMirror),
         Plain(texture = Chess(side = 20, black = Color.red))
       ).lights(
         LightSource((80, 80, 50), Color.red + Color.blue),
