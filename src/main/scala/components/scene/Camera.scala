@@ -3,13 +3,13 @@ package components.scene
 import data.Types._
 
 class Camera private(val position: P, val direction: D, val up: D, val right: D,
-                     val focus: S, val width: S, val height: S,
-                     val resolutionX: Int, val resolutionY: Int) {
+                     val focus: S, val screenSize: (S, S),
+                     val resolution: (Int, Int)) {
   val center = position + direction * focus
-  val maxX = resolutionX - 1
-  val maxY = resolutionY - 1
-  val dx = right * (width / maxX)
-  val dy = up * (-height / maxY)
+  val maxX = resolution._1 - 1
+  val maxY = resolution._2 - 1
+  val dx = right * (screenSize._1 / maxX)
+  val dy = up * (-screenSize._2 / maxY)
   assert((direction cross up) == right)
 
   def apply(x: Int, y: Int) = {
@@ -20,13 +20,13 @@ class Camera private(val position: P, val direction: D, val up: D, val right: D,
 }
 
 object Camera {
-  def apply(position: P, lookAt: P = P.origin, up: D = V.k,
-            focus: S, width: S, height: S)
-           (resolution: (Int, Int)) = {
+  def apply(position: P, lookAt: P, up: D,
+            focus: S, screenSize: (S, S),
+            resolution: (Int, Int)) = {
     val direction = (lookAt - position).direction
     val right = (direction cross up).direction
     val fixedUp = (right cross direction).direction
     new Camera(position, direction, fixedUp, right,
-      focus, width, height, resolution._1, resolution._2)
+      focus, screenSize, resolution)
   }
 }

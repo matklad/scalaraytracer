@@ -1,8 +1,7 @@
 import components.io.{ObjParser, ImageDisplay}
 
-import components.{Material, LightSource}
-import components.scene.{Options, SceneBuilder, Camera}
-import components.shapes.Sphere
+import components.LightSource
+import components.scene.SceneConfig
 import data.Types._
 
 import scala.language.implicitConversions
@@ -14,44 +13,17 @@ object Main extends ImageDisplay {
   def main(args: Array[String]) {
     val s = io.Source.fromFile("utah.obj").mkString
     val triangles = ObjParser.parse(s)
-    val scene = SceneBuilder(
-      Camera(
-        position = (50, 50, 80),
-        up = V.j,
-        focus = 80,
-        width = 40,
-        height = 30))
-      .shapes(
+    val scene = SceneConfig(
+      cameraPosition = (50, 50, 80),
+      up = V.j,
+      focus = 80
+    ).shapes(
         triangles: _*
-      ).ambient(
-        Color.white.amplify(.5)
       ).lights(
         LightSource((100, 0, 100), Color.white),
         LightSource((-100, 0, 100), Color.white)
-      ).options(
-        Options(
-          resolution = (640, 480),
-          oversampling = 2
-        )
-      ).build()
+      ).scene()
     display(scene.render)
     println("Done!")
   }
-
-  val canonicalScene = SceneBuilder(
-    Camera(
-      position = (50, 50, 80),
-      focus = 80,
-      width = 40,
-      height = 30
-    )).shapes(
-      Sphere(8, (10, 0, 0), Material(Color(.7, 0, 0))),
-      Sphere(8, (0, 10, 0), Material(Color(0, .7, 0)))
-    ).ambient(
-      Color(.09, .09, .09)
-    )
-    .lights(
-      LightSource((100, 0, 100), Color(.9, .9, .9)),
-      LightSource((-100, 0, 100), Color(.9, .9, .9))
-    ).build()
 }
