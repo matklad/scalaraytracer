@@ -1,0 +1,6 @@
+scalaraytracer
+==============
+
+```
+sbt run
+```
