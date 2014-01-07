@@ -1,8 +1,9 @@
 import components.io.{ObjParser, ImageDisplay}
 
-import components.{Material, Chess, Solid, LightSource}
+import components.primitives.{Primitive, Chess, Solid, Material}
+import components.{LightSource}
 import components.scene.SceneConfig
-import components.shapes.{Plain, Sphere}
+import components.geometry.{Plain, Sphere}
 import data.Types._
 
 import scala.language.implicitConversions
@@ -23,10 +24,10 @@ object Main extends ImageDisplay {
       oversampling = 3,
       nReflections = 3,
       backgroundColor = Color.blue.amplify(.2)
-    ).shapes(
-        Sphere(10, (-10, 10, 10), Solid(Color.white), Material.mirror),
-        Sphere(10, (10, -20, 10), Solid(Color.white), Material.badMirror),
-        Plain(texture = Chess(side = 20, black = Color.red))
+    ).primitives(
+        Primitive(Sphere(10, (-10, 10, 10)), Solid(Color.white), Material.mirror),
+        Primitive(Sphere(10, (10, -20, 10)), Solid(Color.white), Material.badMirror),
+        Primitive(Plain(), Chess(side = 20, black = Color.red), Material.simple)
       ).lights(
         LightSource((80, 80, 50), Color.red + Color.blue),
         LightSource((-20, -20, 150), Color.blue + Color.green)

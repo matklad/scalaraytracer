@@ -1,9 +1,7 @@
 package components.io
 
-import components.shapes.{Triangle, Shape}
+import components.geometry.{Triangle, Shape}
 import data.Types._
-import components.{Solid, Material}
-import scala.util.Random
 
 object ObjParser {
   def parse(input: String): Vector[Shape] = {
@@ -21,15 +19,10 @@ object ObjParser {
     }
     val vertices = vLines map readVertex
 
-    def color(): Color = {
-      Random.shuffle(List(Color.red, Color.blue, Color.green)).head
-    }
-
     def readFace(line: String): Triangle = {
       val blocks = line split " "
-
       val Array(v1, v2, v3) = blocks map (x => vertices(x.split("/")(0).toInt - 1))
-      Triangle(v1, v2, v3, color())
+      Triangle(v1, v2, v3)
     }
     val faces = fLines map readFace
 

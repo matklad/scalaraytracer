@@ -1,11 +1,9 @@
-package components.shapes
+package components.geometry
 
 import data.Types._
-import components.{Solid, Material}
 
 
-class Triangle(val a: P, val b: P, val c: P, color: Color, material: Material)
-  extends Shape(material, texture = Solid(color)) {
+class Triangle(val a: P, val b: P, val c: P) extends Shape {
 
   private val (n: D, abXnN: V, acXnN: V) = {
     val ab = b - a
@@ -40,6 +38,6 @@ class Triangle(val a: P, val b: P, val c: P, color: Color, material: Material)
 }
 
 object Triangle {
-  def apply(a: P, b: P, c: P, color: Color,material: Material = Material.simple) =
-    new Triangle(a, b, c, color, material)
+  def apply(a: P, b: P, c: P) =
+    new Triangle(a, b, c)
 }

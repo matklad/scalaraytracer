@@ -1,4 +1,4 @@
-import components.shapes.Sphere
+import components.geometry.Sphere
 import data.Types._
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{PropSpec, ShouldMatchers}

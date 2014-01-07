@@ -1,5 +1,4 @@
-package components
-
+package components.primitives
 
 class Material(val ambientK: Double, val diffuseK: Double, val specularK: Double,
                val reflectK: Double, val opacityK: Double) {

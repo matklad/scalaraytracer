@@ -2,9 +2,10 @@ package components.scene
 
 
 import data.Types._
-import components.{Solid, LightRay, Material, LightSource}
-import components.shapes.{Sphere, Shape}
+import components.{LightRay, LightSource}
+import components.geometry.Sphere
 import data.Ray
+import components.primitives.{Primitive, Solid, Material}
 
 class Scene private[scene](config: SceneConfig) {
 
@@ -15,7 +16,7 @@ class Scene private[scene](config: SceneConfig) {
   private val lightSources = config._lights
   private val ambientLight = config.ambientLight
   private val nReflections = config.nReflections
-  private val shapes = config._shapes
+  private val primitives = config._primitives
 
   private val camera =
     Camera(config.cameraPosition, config.center, config.up, config.focus,
@@ -46,22 +47,22 @@ class Scene private[scene](config: SceneConfig) {
   }
 
   private def trace(ray: R, refN: Int): Color = {
-    val (t, shape) = intersect(ray)
-    if (shape.eq(box))
+    val (t, primitive) = intersect(ray)
+    if (primitive.eq(box))
       backgroundColor
     else {
       val p = ray.along(t)
-      val normal = shape.normalAt(p)
-      val color = shape.colorAt(p)
+      val normal = primitive.normalAt(p)
+      val color = primitive.colorAt(p)
       val moved = p + normal * 1e-6
-      val ans = shade(moved, normal, ray.direction, color, shape.material)
-        .amplify(shape.material.opacityK)
+      val ans = shade(moved, normal, ray.direction, color, primitive.material)
+        .amplify(primitive.material.opacityK)
       if (refN == 0)
         ans
       else {
         val reflectedRay = Ray(moved, reflect(ray.direction, normal).direction)
         val refColor = trace(reflectedRay, refN - 1)
-        ans + refColor.amplify(shape.material.reflectK)
+        ans + refColor.amplify(primitive.material.reflectK)
       }
     }
   }
@@ -87,9 +88,9 @@ class Scene private[scene](config: SceneConfig) {
     specular + ambient + diffuse
   }
 
-  private def intersect(ray: R): (S, Shape) = {
-    var intersection: (S, Shape) = (box.intersectWith(ray), box)
-    shapes foreach {
+  private def intersect(ray: R): (S, Primitive) = {
+    var intersection: (S, Primitive) = (box.intersectWith(ray), box)
+    primitives foreach {
       s =>
         val t = s.intersectWith(ray)
         if (t < intersection._1)
@@ -107,7 +108,8 @@ class Scene private[scene](config: SceneConfig) {
     t > (p - l.ray.origin).length
   }
 
-  private val box = Sphere(1e10, P.origin, Solid(Color.pureBlack), Material.absoluteBlack)
+  private val box = Primitive(Sphere(1e10, P.origin), Solid(Color.pureBlack),
+    Material.absoluteBlack)
 
 }
 
@@ -124,15 +126,15 @@ class SceneConfig private(val cameraPosition: P,
                           val nReflections: Int
                            ) {
   private[scene] var _lights: Vector[LightSource] = Vector()
-  private[scene] var _shapes: Vector[Shape] = Vector()
+  private[scene] var _primitives: Vector[Primitive] = Vector()
 
   def lights(lights: LightSource*): SceneConfig = {
     this._lights = lights.toVector
     this
   }
 
-  def shapes(shapes: Shape*): SceneConfig = {
-    this._shapes = shapes.toVector
+  def primitives(primitives: Primitive*): SceneConfig = {
+    this._primitives = primitives.toVector
     this
   }
 

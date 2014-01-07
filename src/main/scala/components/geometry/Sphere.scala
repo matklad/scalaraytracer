@@ -1,10 +1,8 @@
-package components.shapes
+package components.geometry
 
 import data.Types._
-import components.{Solid, Texture, Material}
 
-class Sphere(val radius: S, val center: P, texture: Texture, material: Material)
-  extends Shape(material, texture) {
+class Sphere(val radius: S, val center: P) extends Shape {
   assert(radius > 0)
 
   def normalAt(p: P): D = {
@@ -48,7 +46,6 @@ class Sphere(val radius: S, val center: P, texture: Texture, material: Material)
 }
 
 object Sphere {
-  def apply(radius: S, center: P = P.origin,
-            texture: Texture=Solid(Color.white), material: Material = Material.simple): Sphere =
-    new Sphere(radius, center, texture, material)
+  def apply(radius: S, center: P = P.origin): Sphere =
+    new Sphere(radius, center)
 }
