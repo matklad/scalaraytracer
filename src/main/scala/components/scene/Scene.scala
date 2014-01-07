@@ -16,6 +16,7 @@ class Scene private[scene](config: SceneConfig) {
   private val lightSources = config._lights
   private val ambientLight = config.ambientLight
   private val nReflections = config.nReflections
+  private val threshold = 0.01
   private val primitives = config._primitives
 
   private val camera =
@@ -46,7 +47,7 @@ class Scene private[scene](config: SceneConfig) {
     bitMap
   }
 
-  private def trace(ray: R, refN: Int): Color = {
+  private def trace(ray: R, refN: Int = nReflections, impact: Double = 1): Color = {
     val (t, primitive) = intersect(ray)
     if (primitive.eq(box))
       backgroundColor
@@ -57,11 +58,12 @@ class Scene private[scene](config: SceneConfig) {
       val moved = p + normal * 1e-6
       val ans = shade(moved, normal, ray.direction, color, primitive.material)
         .amplify(primitive.material.opacityK)
-      if (refN == 0)
+      val newImpact = impact * primitive.material.reflectK
+      if (refN == 0 || newImpact < threshold)
         ans
       else {
         val reflectedRay = Ray(moved, reflect(ray.direction, normal).direction)
-        val refColor = trace(reflectedRay, refN - 1)
+        val refColor = trace(reflectedRay, refN - 1, newImpact)
         ans + refColor.amplify(primitive.material.reflectK)
       }
     }
@@ -134,7 +136,7 @@ class SceneConfig private(val cameraPosition: P,
   }
 
   def primitives(primitives: Primitive*): SceneConfig = {
-    this._primitives = primitives.toVector
+    this._primitives ++= primitives.toVector
     this
   }
 
