@@ -1,4 +1,4 @@
-name := "S-ray"
+name := "scalaraytracer"
 
 scalaVersion := "2.10.3"
 
@@ -8,5 +8,9 @@ libraryDependencies ++= Seq(
 )
 
 scalacOptions ++= Seq("-feature", "-deprecation")
+
+fullRunTask(TaskKey[Unit]("bench"), Test, "Bench")
+
+mainClass in (Compile, run) := Some("Main")
 
 fork in run := true

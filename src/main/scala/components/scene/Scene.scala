@@ -1,6 +1,5 @@
 package components.scene
 
-
 import data.Types._
 import components.{LightRay, LightSource}
 import components.geometry.{DumbIndex, Sphere}
@@ -28,7 +27,6 @@ class Scene private[scene](config: SceneConfig) {
 
 
   def render: BitMap = {
-    val start = System.currentTimeMillis()
     val os = oversampling
     val pixels = Array.fill[Array[Color]](resX)(null)
     val cols = 0 until resX
@@ -45,8 +43,6 @@ class Scene private[scene](config: SceneConfig) {
     val bitMap = BitMap(resX, resY) {
       (x, y) => pixels(x)(y)
     }
-    val end = System.currentTimeMillis()
-    println(s"time for frame: ${(end - start) / 1000}s")
     bitMap
   }
 

@@ -33,7 +33,9 @@ object Main extends ImageDisplay {
       ).lights(
         LightSource((80, 80, 50), white)
       ).scene()
+    val start = System.currentTimeMillis()
     display(scene.render)
-    println("Done!")
+    val end = System.currentTimeMillis()
+    println(s"time: ${(end - start) / 1000}s")
   }
 }
