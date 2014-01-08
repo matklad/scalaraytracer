@@ -17,12 +17,12 @@ object Main extends ImageDisplay {
     val triangles = ObjParser.parse(s)
     val primitives = for {t <- triangles} yield Primitive(t, Solid(white.amplify(.3)), Material.simple)
     val scene = SceneConfig(
-      cameraPosition = (0, 10, 90),
+      cameraPosition = (0, 40, 90),
       up = -V.k,
       focus = 80,
       parallel = true,
       resolution = (640, 480),
-      oversampling = 2,
+      oversampling = 3,
       nReflections = 3,
       backgroundColor = blue.amplify(.2),
       ambientLight = white.amplify(.3)
@@ -31,8 +31,7 @@ object Main extends ImageDisplay {
       ).primitives(
         Primitive(Plain((0, -8, 0), ox = V.k, oy = V.i), Chess(side = 5, black = red), Material.simple)
       ).lights(
-        LightSource((80, 80, 50), white),
-        LightSource((-20, 20, 150), blue + green)
+        LightSource((80, 80, 50), white)
       ).scene()
     display(scene.render)
     println("Done!")
