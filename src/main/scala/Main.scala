@@ -23,7 +23,7 @@ object Main extends ImageDisplay {
       parallel = true,
       resolution = (640, 480),
       oversampling = 2,
-      nReflections = 1,
+      nReflections = 3,
       backgroundColor = blue.amplify(.2),
       ambientLight = white.amplify(.3)
     ).primitives(
