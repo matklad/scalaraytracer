@@ -7,7 +7,7 @@ class Material(val ambientK: Double, val diffuseK: Double, val specularK: Double
 
 object Material {
   def apply(ambientK: Double = .9, diffuseK: Double = .9, specularK: Double = 4,
-            reflectK: Double = 0, opacityK: Double = 1): Material = {
+            reflectK: Double = .1, opacityK: Double = .9): Material = {
     new Material(ambientK, diffuseK, specularK, reflectK, opacityK)
   }
 

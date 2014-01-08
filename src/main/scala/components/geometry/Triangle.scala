@@ -5,7 +5,7 @@ import data.Types._
 
 class Triangle(val a: P, val b: P, val c: P) extends Shape {
 
-  private val (n: D, abXnN: V, acXnN: V) = {
+  protected val (n: D, abXnN: V, acXnN: V, ab: V, ac: V) = {
     val ab = b - a
     val ac = c - a
     val n = (ab cross ac).direction
@@ -15,7 +15,7 @@ class Triangle(val a: P, val b: P, val c: P) extends Shape {
     val acDabXn = ac dot abXn
     val abXnN = abXn * (1 / acDabXn)
     val acXnN = acXn * (1 / abDacXn)
-    (n, abXnN, acXnN)
+    (n, abXnN, acXnN, ab, ac)
   }
 
   def normalAt(p: P): D = n
@@ -40,4 +40,26 @@ class Triangle(val a: P, val b: P, val c: P) extends Shape {
 object Triangle {
   def apply(a: P, b: P, c: P) =
     new Triangle(a, b, c)
+}
+
+class InterpolatedTriangle(a: P, val na: D, b: P, val nb: D, c: P, val nc: D)
+  extends Triangle(a, b, c) {
+  override def normalAt(p: P): D = {
+    // a + x * ab + y * ac = p
+    // let v = p - a
+    // x * ab + y * ac = v
+    val v = p - a
+    val oac = ab - ac * ((ac dot ab) / (ac dot ac))
+    val oab = ac - ab * ((ac dot ab) / (ab dot ab))
+    val x = (v dot oac) / (ab dot oac)
+    val y = (v dot oab) / (ac dot oab)
+    val z = 1 - (x + y)
+    val n = nb * x + nc * y + na * z
+    n.direction
+  }
+}
+
+object InterpolatedTriangle {
+  def apply(a: P, na: D, b: P, nb: D, c: P, nc: D) =
+    new InterpolatedTriangle(a, na, b, nb, c, nc)
 }

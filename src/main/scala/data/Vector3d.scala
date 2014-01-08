@@ -43,7 +43,7 @@ class Vector3d protected(private val x: Double, private val y: Double, private v
   }
 
   override def toString: String = {
-    f"($x%.1f, $y%.1f, $z%.1f)"
+    f"($x%.3f, $y%.3f, $z%.3f)"
   }
 }
 

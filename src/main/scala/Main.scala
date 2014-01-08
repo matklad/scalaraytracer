@@ -1,11 +1,11 @@
+import components.geometry.Plain
 import components.io.{ObjParser, ImageDisplay}
 
-import components.primitives.{Primitive, Chess, Solid, Material}
-import components.{LightSource}
+import components.primitives.{Chess, Primitive, Solid, Material}
+import components.LightSource
 import components.scene.SceneConfig
-import components.geometry.{Plain, Sphere}
 import data.Types._
-
+import Color._
 import scala.language.implicitConversions
 
 object Main extends ImageDisplay {
@@ -15,22 +15,22 @@ object Main extends ImageDisplay {
   def main(args: Array[String]) {
     val s = io.Source.fromFile("utah.obj").mkString
     val triangles = ObjParser.parse(s)
+    val primitives = for {t <- triangles} yield Primitive(t, Solid(white), Material.simple)
     val scene = SceneConfig(
-      cameraPosition = (200, 0, 100),
-      center = (0, 0, 15),
-      up = V.k,
+      cameraPosition = (0, 40, 90),
+      up = -V.k,
       focus = 80,
       parallel = true,
-      oversampling = 3,
-      nReflections = 3,
+      oversampling = 2,
+      nReflections = 2,
       backgroundColor = Color.blue.amplify(.2)
     ).primitives(
-        Primitive(Sphere(10, (-10, 10, 10)), Solid(Color.white), Material.mirror),
-        Primitive(Sphere(10, (10, -20, 10)), Solid(Color.white), Material.badMirror),
-        Primitive(Plain(), Chess(side = 20, black = Color.red), Material.simple)
+        primitives: _*
+      ).primitives(
+        Primitive(Plain((0, -8, 0), ox = V.k, oy = V.i), Chess(side = 5, black = red), Material.simple)
       ).lights(
-        LightSource((80, 80, 50), Color.red + Color.blue),
-        LightSource((-20, -20, 150), Color.blue + Color.green)
+        LightSource((80, 80, 50), white),
+        LightSource((-20, 20, 150), blue + green)
       ).scene()
     display(scene.render)
     println("Done!")
