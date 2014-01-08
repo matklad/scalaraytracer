@@ -28,7 +28,7 @@ class Triangle(val a: P, val b: P, val c: P) extends Shape {
       val tdo = r.direction * t - ao
       val p = tdo dot acXnN
       val q = tdo dot abXnN
-      if (0 < p && p < 1 && 0 < q && q < 1 && p + q < 1)
+      if (0 < p && p < 1 && 0 < q && q < 1 && p + q < 1 && t > 0)
         t
       else
         S.MaxValue

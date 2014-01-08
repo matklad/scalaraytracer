@@ -15,15 +15,17 @@ object Main extends ImageDisplay {
   def main(args: Array[String]) {
     val s = io.Source.fromFile("utah.obj").mkString
     val triangles = ObjParser.parse(s)
-    val primitives = for {t <- triangles} yield Primitive(t, Solid(white), Material.simple)
+    val primitives = for {t <- triangles} yield Primitive(t, Solid(white.amplify(.3)), Material.simple)
     val scene = SceneConfig(
-      cameraPosition = (0, 40, 90),
+      cameraPosition = (0, 10, 90),
       up = -V.k,
       focus = 80,
       parallel = true,
+      resolution = (640, 480),
       oversampling = 2,
-      nReflections = 2,
-      backgroundColor = Color.blue.amplify(.2)
+      nReflections = 1,
+      backgroundColor = blue.amplify(.2),
+      ambientLight = white.amplify(.3)
     ).primitives(
         primitives: _*
       ).primitives(

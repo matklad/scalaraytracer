@@ -98,6 +98,7 @@ class Scene private[scene](config: SceneConfig) {
         if (t < intersection._1)
           intersection = (t, s)
     }
+    assert(intersection._1 > 0)
     intersection
   }
 
