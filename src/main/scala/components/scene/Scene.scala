@@ -3,9 +3,9 @@ package components.scene
 
 import data.Types._
 import components.{LightRay, LightSource}
-import components.geometry.Sphere
-import data.Ray
+import components.geometry.{DumbIndex, Sphere}
 import components.primitives.{Primitive, Solid, Material}
+import data.Ray
 
 class Scene private[scene](config: SceneConfig) {
 
@@ -18,6 +18,9 @@ class Scene private[scene](config: SceneConfig) {
   private val nReflections = config.nReflections
   private val threshold = 0.01
   private val primitives = config._primitives
+  private val box = Primitive(Sphere(1e10, P.origin), Solid(Color.pureBlack),
+    Material.absoluteBlack)
+  private val index = DumbIndex(primitives, box)
 
   private val camera =
     Camera(config.cameraPosition, config.center, config.up, config.focus,
@@ -90,17 +93,8 @@ class Scene private[scene](config: SceneConfig) {
     specular + ambient + diffuse
   }
 
-  private def intersect(ray: R): (S, Primitive) = {
-    var intersection: (S, Primitive) = (box.intersectWith(ray), box)
-    primitives foreach {
-      s =>
-        val t = s.intersectWith(ray)
-        if (t < intersection._1)
-          intersection = (t, s)
-    }
-    assert(intersection._1 > 0)
-    intersection
-  }
+  private def intersect(ray: R): (S, Primitive) =
+    index.intersect(ray)
 
   private def reflect(original: D, n: D) = {
     original - (n * (n dot original)) * 2
@@ -111,8 +105,6 @@ class Scene private[scene](config: SceneConfig) {
     t > (p - l.ray.origin).length
   }
 
-  private val box = Primitive(Sphere(1e10, P.origin), Solid(Color.pureBlack),
-    Material.absoluteBlack)
 
 }
 

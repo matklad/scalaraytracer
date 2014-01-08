@@ -5,9 +5,10 @@ import data.Types._
 
 class Primitive private(private val shape: Shape,
                         private val texture: Texture,
-                        val material: Material) {
+                        val material: Material)
+  extends Shape {
 
-  def normalAt(p: P): D = shape.normalAt(p)
+  def normalAt(p: P) = shape.normalAt(p)
 
   def intersectWith(r: R): S = shape.intersectWith(r)
 

@@ -13,5 +13,3 @@ object Ray {
 
   def apply(from: Point, to: Point): Ray = Ray(from, (to - from).direction)
 }
-
-

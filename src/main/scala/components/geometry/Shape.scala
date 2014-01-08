@@ -2,7 +2,7 @@ package components.geometry
 
 import data.Types._
 
-abstract class Shape {
+trait Shape {
 
   def normalAt(p: P): D
 
