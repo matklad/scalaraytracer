@@ -22,8 +22,8 @@ object Main extends ImageDisplay {
       focus = 80,
       parallel = true,
       resolution = (640, 480),
-      oversampling = 3,
-      nReflections = 3,
+      oversampling = 1,
+      nReflections = 1,
       backgroundColor = blue.amplify(.2),
       ambientLight = white.amplify(.3)
     ).primitives(

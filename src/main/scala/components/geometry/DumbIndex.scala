@@ -3,21 +3,24 @@ package components.geometry
 import data.Types._
 
 
-class DumbIndex[T <: Shape](val items: Vector[T], val default: T) extends Index[T] {
-  def intersect(ray: R): (S, T) = {
-    var intersection: (S, T) = (default.intersectWith(ray), default)
-    items foreach {
-      s =>
-        val t = s.intersectWith(ray)
-        if (t < intersection._1)
-          intersection = (t, s)
+trait DumbIndex extends IndexWrapper {
+
+  private class Dumb(val items: Iterable[Shape], val default: Shape) extends Index {
+    def intersect(ray: R): (S, Shape) = {
+      var intersection: (S, Shape) = (default.intersectWith(ray), default)
+      items foreach {
+        s =>
+          val t = s.intersectWith(ray)
+          if (t < intersection._1)
+            intersection = (t, s)
+      }
+      assert(intersection._1 > 0)
+      intersection
     }
-    assert(intersection._1 > 0)
-    intersection
   }
+
+
+  def createIndex(shapes: Iterable[Shape], default: Shape): Index =
+    new Dumb(shapes, default)
 }
 
-object DumbIndex {
-  def apply[T <: Shape](items: Vector[T], default: T) =
-    new DumbIndex[T](items, default)
-}

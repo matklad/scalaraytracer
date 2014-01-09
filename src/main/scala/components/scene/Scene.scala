@@ -6,7 +6,7 @@ import components.geometry.{DumbIndex, Sphere}
 import components.primitives.{Primitive, Solid, Material}
 import data.Ray
 
-class Scene private[scene](config: SceneConfig) {
+class Scene private[scene](config: SceneConfig) extends DumbIndex {
 
   private val (resX, resY) = config.resolution
   private val oversampling = config.oversampling
@@ -16,10 +16,16 @@ class Scene private[scene](config: SceneConfig) {
   private val ambientLight = config.ambientLight
   private val nReflections = config.nReflections
   private val threshold = 0.01
-  private val primitives = config._primitives
   private val box = Primitive(Sphere(1e10, P.origin), Solid(Color.pureBlack),
     Material.absoluteBlack)
-  private val index = DumbIndex(primitives, box)
+
+  val (shapesMap, index) = {
+    val partialMap = (config._primitives map (p => p.shape -> p)).toMap
+    val shapesMap = partialMap + (box.shape -> box)
+    val index = createIndex(partialMap.keys, default = box.shape)
+    (shapesMap, index)
+  }
+
 
   private val camera =
     Camera(config.cameraPosition, config.center, config.up, config.focus,
@@ -52,7 +58,7 @@ class Scene private[scene](config: SceneConfig) {
       backgroundColor
     else {
       val p = ray.along(t)
-      val normal = primitive.normalAt(p)
+      val normal = primitive.shape.normalAt(p)
       val color = primitive.colorAt(p)
       val moved = p + normal * 1e-6
       val ans = shade(moved, normal, ray.direction, color, primitive.material)
@@ -89,8 +95,10 @@ class Scene private[scene](config: SceneConfig) {
     specular + ambient + diffuse
   }
 
-  private def intersect(ray: R): (S, Primitive) =
-    index.intersect(ray)
+  private def intersect(ray: R): (S, Primitive) = {
+    val (t, shape) = index.intersect(ray)
+    (t, shapesMap(shape))
+  }
 
   private def reflect(original: D, n: D) = {
     original - (n * (n dot original)) * 2

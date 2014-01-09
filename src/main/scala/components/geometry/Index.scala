@@ -1,6 +1,11 @@
 package components.geometry
+
 import data.Types._
 
-trait Index[T <: Shape] {
-  def intersect(ray: R) : (S, T)
+trait IndexWrapper {
+  def createIndex(shapes: Iterable[Shape], default: Shape): Index
+}
+
+trait Index {
+  def intersect(r: R): (S, Shape)
 }
