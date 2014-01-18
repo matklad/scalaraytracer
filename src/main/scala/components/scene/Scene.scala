@@ -2,7 +2,7 @@ package components.scene
 
 import data.Types._
 import components.{LightRay, LightSource}
-import components.geometry.{DumbIndex, Sphere}
+import components.geometry.{Intersection, DumbIndex, Sphere}
 import components.primitives.{Primitive, Solid, Material}
 import data.Ray
 
@@ -18,11 +18,12 @@ class Scene private[scene](config: SceneConfig) {
   private val threshold = 0.01
   private val box = Primitive(Sphere(1e10, P.origin), Solid(Color.pureBlack),
     Material.absoluteBlack)
+  private val defaultIntersection = Intersection(S.MaxValue - 1, box.shape)
 
   val (shapesMap, index) = {
     val partialMap = (config._primitives map (p => p.shape -> p)).toMap
     val shapesMap = partialMap + (box.shape -> box)
-    val index = DumbIndex(partialMap.keys, default = box.shape)
+    val index = DumbIndex(partialMap.keys)
     (shapesMap, index)
   }
 
@@ -96,8 +97,8 @@ class Scene private[scene](config: SceneConfig) {
   }
 
   private def intersect(ray: R): (S, Primitive) = {
-    val (t, shape) = index.intersect(ray)
-    (t, shapesMap(shape))
+    val intersection = index.intersect(ray) >< defaultIntersection
+    (intersection.t, shapesMap(intersection.shape))
   }
 
   private def reflect(original: D, n: D) = {
