@@ -31,9 +31,9 @@ class Triangle(val a: P, val b: P, val c: P) extends Shape {
       if (0 < p && p < 1 && 0 < q && q < 1 && p + q < 1 && t > 0)
         t
       else
-        S.MaxValue
+        noIntersection
     } else
-      S.MaxValue
+      noIntersection
   }
 }
 

@@ -13,7 +13,7 @@ class Plain(val origin: P, val ox: D, val oy: D) extends Shape {
     // X = r.origin +  t * r.direction
     // t = (n, origin - r.origin) / (n, r.direction)
     val t = (n dot (origin - r.origin)) / (n dot r.direction)
-    if (t > 0) t else S.MaxValue
+    if (t > 0) t else noIntersection
   }
 
   override def coordinatesAt(p: Types.P): (Types.S, Types.S) = {

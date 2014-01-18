@@ -4,6 +4,8 @@ import data.Types._
 
 trait Shape {
 
+  val noIntersection = S.MaxValue
+
   def normalAt(p: P): D
 
   def intersectWith(r: R): S

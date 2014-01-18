@@ -29,7 +29,7 @@ class Sphere(val radius: S, val center: P) extends Shape {
     val dd = r.direction dot r.direction
     val D = sd * sd - dd * (ss - radius * radius)
     if (D < 0)
-      S.MaxValue
+      noIntersection
     else {
       val sqrtD = math.sqrt(D)
       val (t1, t2) = ((sd - sqrtD) / dd, (sd + sqrtD) / dd)
@@ -39,7 +39,7 @@ class Sphere(val radius: S, val center: P) extends Shape {
       else if (t2 > 0)
         t2
       else
-        S.MaxValue
+        noIntersection
     }
   }
 

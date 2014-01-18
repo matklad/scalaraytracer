@@ -20,7 +20,7 @@ object Main extends ImageDisplay {
       cameraPosition = (0, 40, 90),
       up = -V.k,
       focus = 80,
-      parallel = true,
+      parallel = false,
       resolution = (640, 480),
       oversampling = 1,
       nReflections = 1,

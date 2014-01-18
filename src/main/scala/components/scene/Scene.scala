@@ -2,7 +2,7 @@ package components.scene
 
 import data.Types._
 import components.{LightRay, LightSource}
-import components.geometry.{Intersection, DumbIndex, Sphere}
+import components.geometry.{Intersection, Octree, Sphere}
 import components.primitives.{Primitive, Solid, Material}
 import data.Ray
 
@@ -23,7 +23,7 @@ class Scene private[scene](config: SceneConfig) {
   val (shapesMap, index) = {
     val partialMap = (config._primitives map (p => p.shape -> p)).toMap
     val shapesMap = partialMap + (box.shape -> box)
-    val index = DumbIndex(partialMap.keys)
+    val index = Octree(partialMap.keys, depth = 4)
     (shapesMap, index)
   }
 

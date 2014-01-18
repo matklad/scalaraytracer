@@ -1,7 +1,7 @@
 package data
 
 
-class Vector3d protected(private val x: Double, private val y: Double, private val z: Double) {
+class Vector3d protected(val x: Double, val y: Double, val z: Double) {
 
   private[data] def map(f: Double => Double): Vector3d = new Vector3d(f(x), f(y), f(z))
 
@@ -15,6 +15,9 @@ class Vector3d protected(private val x: Double, private val y: Double, private v
   def unary_- = map(-_)
 
   def *(that: Double) = map(_ * that)
+
+  def :/(that: Vector3d) =
+    zipWith(_ / _)(that map (x => x))
 
   def dot(that: Vector3d): Double = {
     val r = this.zipWith(_ * _)(that)
@@ -48,7 +51,7 @@ class Vector3d protected(private val x: Double, private val y: Double, private v
 }
 
 class UnitVector3d(x: Double, y: Double, z: Double) extends Vector3d(x, y, z) {
-  assert(Math.abs(length - 1) < 1e-6, s"$length ${1}")
+  assert(math.abs(length - 1) < 1e-6, s"$length ${1}")
 
   override def unary_- = new UnitVector3d(-x, -y, -z)
 
@@ -58,6 +61,15 @@ object Vector3d {
   def apply(x: Double, y: Double, z: Double): Vector3d = {
     new Vector3d(x, y, z)
   }
+
+  def lowerBound(v1: Vector3d, v2: Vector3d): Vector3d = {
+    v1.zipWith(math.min)(v2)
+  }
+
+  def upperBound(v1: Vector3d, v2: Vector3d): Vector3d = {
+    v1.zipWith(math.max)(v2)
+  }
+
 
   val zero: Vector3d = Vector3d(0, 0, 0)
 

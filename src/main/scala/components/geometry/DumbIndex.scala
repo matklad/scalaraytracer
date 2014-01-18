@@ -5,7 +5,7 @@ import data.Types._
 
 class DumbIndex(val items: Iterable[Shape]) extends Index {
   def intersect(ray: R): Intersection =
-    items.view map (Intersection(ray, _)) reduce (_ >< _)
+    (items.view map (Intersection(ray, _))).fold(Intersection.zero)(_ >< _)
 }
 
 object DumbIndex {

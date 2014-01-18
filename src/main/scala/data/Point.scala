@@ -17,4 +17,8 @@ object Point {
   def apply(x: Double, y: Double, z: Double) = new Point(Vector3d(x, y, z))
 
   def origin = new Point(Vector3d.zero)
+
+  def lowerBound(p1: Point, p2: Point) = new Point(Vector3d.lowerBound(p1.v, p2.v))
+
+  def upperBound(p1: Point, p2: Point) = new Point(Vector3d.upperBound(p1.v, p2.v))
 }
