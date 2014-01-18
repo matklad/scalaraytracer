@@ -6,7 +6,7 @@ import components.geometry.{DumbIndex, Sphere}
 import components.primitives.{Primitive, Solid, Material}
 import data.Ray
 
-class Scene private[scene](config: SceneConfig) extends DumbIndex {
+class Scene private[scene](config: SceneConfig) {
 
   private val (resX, resY) = config.resolution
   private val oversampling = config.oversampling
@@ -22,7 +22,7 @@ class Scene private[scene](config: SceneConfig) extends DumbIndex {
   val (shapesMap, index) = {
     val partialMap = (config._primitives map (p => p.shape -> p)).toMap
     val shapesMap = partialMap + (box.shape -> box)
-    val index = createIndex(partialMap.keys, default = box.shape)
+    val index = DumbIndex(partialMap.keys, default = box.shape)
     (shapesMap, index)
   }
 
