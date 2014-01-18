@@ -20,10 +20,10 @@ object Main extends ImageDisplay {
       cameraPosition = (0, 40, 90),
       up = -V.k,
       focus = 80,
-      parallel = false,
+      parallel = true,
       resolution = (640, 480),
-      oversampling = 1,
-      nReflections = 1,
+      oversampling = 2,
+      nReflections = 3,
       backgroundColor = blue.amplify(.2),
       ambientLight = white.amplify(.3)
     ).primitives(

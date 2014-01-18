@@ -9,6 +9,6 @@ class DummyDisplay extends Display {
       val Color.RGB(r, g, b) = bitmap(x, y)
       totalRed += r
     }
-    println(totalRed - 13537646)
+    println(totalRed - 54116643)
   }
 }

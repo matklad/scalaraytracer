@@ -19,7 +19,7 @@ object Bench extends DummyDisplay {
       up = -V.k,
       focus = 80,
       parallel = true,
-      resolution = (320, 240),
+      resolution = (640, 480),
       oversampling = 2,
       nReflections = 3,
       backgroundColor = blue.amplify(.2),
