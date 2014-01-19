@@ -9,18 +9,18 @@ class VectorTest extends FunSuite {
   val scaled = a * 2
   val expected = V(2, 4, 6)
   test("addition") {
-    assert(sum == expected)
+    assert(sum ~~ expected)
   }
   test("difference") {
-    assert(diff == V.zero)
+    assert(diff ~~ V.zero)
   }
   test("scaling") {
-    assert(scaled == expected)
+    assert(scaled ~~ expected)
   }
   test("dot") {
     assert(a.dot(b) == 14.0)
   }
   test("cross") {
-    assert(a.cross(b) == V.zero)
+    assert(a.cross(b) ~~   V.zero)
   }
 }

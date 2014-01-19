@@ -10,7 +10,7 @@ class Camera private(val position: P, val direction: D, val up: D, val right: D,
   val maxY = resolution._2 - 1
   val dx = right * (screenSize._1 / maxX)
   val dy = up * (-screenSize._2 / maxY)
-  assert((direction cross up) == right)
+  assert((direction cross up) ~~ right)
 
   def apply(x: Int, y: Int) = {
     assert(0 <= x && x <= maxX && 0 <= y && y <= maxY)

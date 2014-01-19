@@ -38,12 +38,11 @@ class Vector3d protected(val x: Double, val y: Double, val z: Double) {
     new UnitVector3d(u.x, u.y, u.z)
   }
 
-  override def equals(that: scala.Any): Boolean = {
-    that match {
-      case that: Vector3d => (this - that).length < 1e-6
-      case _ => false
-    }
+  def ~~(that: Vector3d): Boolean = {
+    (this - that).length < 1e-6
   }
+
+  override def equals(that: scala.Any) = throw new ScalaReflectionException("asd")
 
   override def toString: String = {
     f"($x%.3f, $y%.3f, $z%.3f)"

@@ -2,7 +2,7 @@ package components.geometry
 
 import data.Types._
 
-trait Shape {
+abstract class Shape {
 
   val noIntersection = S.MaxValue
 
@@ -11,4 +11,9 @@ trait Shape {
   def intersectWith(r: R): S
 
   def coordinatesAt(p: P): (S, S) = (0, 0)
+
+  override final def equals(other: Any) = other match {
+    case s: Shape => eq(s)
+    case _ => false
+  }
 }
