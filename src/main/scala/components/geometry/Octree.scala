@@ -10,7 +10,7 @@ class Octree(shapes: Iterable[Shape], depth: Int) extends Index {
     dumb.intersect(r) >< intersect(r, root)
   }
 
-  private val trianglesPerNode = 3
+  private val trianglesPerNode = 10
   private val (dumb: DumbIndex, root: Tree) = {
     val (triangles: Seq[Triangle], others: Seq[Shape]) = {
       val tb = new VectorBuilder[Triangle]()
