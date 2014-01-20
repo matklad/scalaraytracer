@@ -12,7 +12,7 @@ class Octree(shapes: Iterable[Shape], depth: Int) extends Index {
 
   private val trianglesPerNode = 3
   private val (dumb: DumbIndex, root: Tree) = {
-    val (triangles: Vector[Triangle], others: Vector[Shape]) = {
+    val (triangles: Seq[Triangle], others: Seq[Shape]) = {
       val tb = new VectorBuilder[Triangle]()
       val ob = new VectorBuilder[Shape]()
       shapes foreach {
@@ -75,27 +75,27 @@ class Octree(shapes: Iterable[Shape], depth: Int) extends Index {
 
   private abstract sealed class Node
 
-  private case class Branch(children: Vector[Tree]) extends Node
+  private case class Branch(children: Array[Tree]) extends Node
 
-  private case class Leaf(triangles: Vector[Triangle]) extends Node
+  private case class Leaf(triangles: Array[Triangle]) extends Node
 
-  private def makeTree(triangles: Vector[Triangle], depth: Int): Tree = {
+  private def makeTree(triangles: Seq[Triangle], depth: Int): Tree = {
     val box = boundingBox(triangles: _*)
 
     Tree(box, makeNode(box, triangles, depth))
   }
 
-  private def makeNode(box: Box, triangles: Vector[Triangle], depth: Int): Node = {
+  private def makeNode(box: Box, triangles: Seq[Triangle], depth: Int): Node = {
     val stop = (depth == 0) || triangles.size < trianglesPerNode
     if (stop)
-      Leaf(triangles)
+      Leaf(triangles.toArray)
     else {
       val octobox = box.split8
       val children = for {
         subBox <- octobox
         boxTriangles = triangles.filter(subBox.intersects)
       } yield Tree(subBox, makeNode(subBox, boxTriangles, depth - 1))
-      Branch(children.toVector)
+      Branch(children.toArray)
     }
   }
 
