@@ -5,9 +5,10 @@ import data.Types._
 
 class Triangle(val a: P, val b: P, val c: P) extends Shape {
 
-  protected val (n: D, abXnN: V, acXnN: V, ab: V, ac: V) = {
-    val ab = b - a
-    val ac = c - a
+  val ab = b - a
+  val ac = c - a
+
+  protected val (n: D, abXnN: V, acXnN: V) = {
     val n = (ab cross ac).direction
     val abXn = ab cross n
     val acXn = ac cross n
@@ -15,7 +16,7 @@ class Triangle(val a: P, val b: P, val c: P) extends Shape {
     val acDabXn = ac dot abXn
     val abXnN = abXn * (1 / acDabXn)
     val acXnN = acXn * (1 / abDacXn)
-    (n, abXnN, acXnN, ab, ac)
+    (n, abXnN, acXnN)
   }
 
   def normalAt(p: P): D = n

@@ -2,6 +2,7 @@ package components.geometry
 
 import data.Types._
 import scala.collection.immutable.VectorBuilder
+import simplex.Dictionary
 
 
 class Octree(shapes: Iterable[Shape], depth: Int) extends Index {
@@ -49,7 +50,11 @@ class Octree(shapes: Iterable[Shape], depth: Int) extends Index {
       boxes.toVector
     }
 
-    def intersects(triangle: Triangle): Boolean = {
+    def intersects(triangle: Triangle) =
+      intersectsBox(triangle) && intersectsIndeed(triangle)
+
+
+    private def intersectsBox(triangle: Triangle): Boolean = {
       val Box(olo, ohi) = boundingBox(triangle)
       def less(p1: P, p2: P): Boolean = {
         val d = p2 - p1
@@ -57,6 +62,39 @@ class Octree(shapes: Iterable[Shape], depth: Int) extends Index {
       }
       !(less(hi, olo) || less(ohi, lo))
     }
+
+    private def intersectsIndeed(triangle: Triangle): Boolean = {
+      val ab = triangle.ab
+      val ac = triangle.ac
+      val l = lo - triangle.a
+      val h = hi - triangle.a
+      //    l < p*ab + q*ac < h
+      //
+      //    max -t
+      //    -t + p*ab  + q*ac < h
+      //    -t - p*ab  - q*ac < -l
+      //    -t + p            < 1
+      //    -t         + q    < 1
+      //    -t + p     + q    < 1
+
+      val pre = Dictionary(10, 4,
+
+        0, -1, 0, 0,
+        h.x, 1, -ab.x, -ac.x,
+        h.y, 1, -ab.y, -ac.y,
+        h.z, 1, -ab.z, -ac.z,
+        -l.x, 1, ac.x, ac.x,
+        -l.y, 1, ac.y, ac.y,
+        -l.z, 1, ac.z, ac.z,
+        1, 1, -1, 0,
+        1, 1, 0, -1,
+        1, 1, -1, -1
+
+      )
+      val d = pre.magicPivot
+      d.opt.target > -1e-6
+    }
+
 
     def intersects(ray: R): Boolean = {
       val ll = (lo - ray.origin) :/ ray.direction
@@ -117,6 +155,16 @@ class Octree(shapes: Iterable[Shape], depth: Int) extends Index {
 
     }
   }
+
+  private def totalTriangles = {
+    def ttRec(t: Tree): Int = t.node match {
+      case Branch(children) => children.map(ttRec).sum
+      case Leaf(ts) => ts.size
+    }
+    ttRec(root)
+  }
+
+
 }
 
 object Octree {
